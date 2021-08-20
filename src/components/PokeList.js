@@ -4,7 +4,7 @@ import axios from 'axios'
 export default function PokeList() {
   useEffect(
     axios
-      .get('https://pokeapi.co/api/v2/', {
+      .get('https://pokeapi.co/api/v2/pokemon', {
         params: {
           offset: 20,
           limit: 20,
