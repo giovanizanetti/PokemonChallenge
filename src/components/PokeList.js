@@ -46,7 +46,7 @@ export default function PokeList() {
     }
   }, [pokemons])
 
-  // If more them one type add comma in between
+  // If more them one type add comma between
   const formatTypes = (types) => {
     return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
   }

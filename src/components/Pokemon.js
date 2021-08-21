@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Table from 'react-bootstrap/Table'
+import { Card, ListGroup, ListGroupItem } from 'react-bootstrap'
 
 export default function PokeList() {
   useEffect(() => {
@@ -13,5 +13,13 @@ export default function PokeList() {
     // fetchPokemon()
   }, [])
 
-  return <div>Pokemon</div>
+  return (
+    <Card style={{ width: '18rem' }}>
+      <ListGroup variant='flush'>
+        <ListGroupItem>Cras justo odio</ListGroupItem>
+        <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
+        <ListGroupItem>Vestibulum at eros</ListGroupItem>
+      </ListGroup>
+    </Card>
+  )
 }
