@@ -6,44 +6,71 @@ export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
 
   useEffect(() => {
-    const fetchPokeDetails = async (data) => {
-      data.map(async (poke) => {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${poke.name}`)
-        console.log(response)
-      })
-    }
+    if (!pokemons.length) {
+      const fetchPokeDetails = (data) => {
+        const list = []
 
-    const fetchPokemon = async () => {
-      const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
-      const data = await response.data.results
-      fetchPokeDetails(data)
-      setPokemons(data)
-    }
+        data.forEach((poke) =>
+          axios
+            .get(`https://pokeapi.co/api/v2/pokemon/${poke.name}`)
+            .then((res) => {
+              const { id, name, height, weight, types } = res.data
 
-    fetchPokemon()
-  }, [])
+              return {
+                id,
+                name,
+                height,
+                weight,
+                types,
+              }
+            })
+            .then((poke) => {
+              list.push(poke)
+              setPokemons(list)
+            })
+            .catch((err) => console.log(err))
+        )
+      }
+
+      const fetchPokemon = async () => {
+        try {
+          const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
+          const data = await response.data.results
+          fetchPokeDetails(data)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+
+      fetchPokemon()
+    }
+  }, [pokemons])
 
   return (
     <Table striped bordered hover variant='dark'>
       <thead>
         <tr>
-          <th>#</th>
+          <th>ID</th>
           <th>Name</th>
-          {/* <th>URL</th>
-          <th>Username</th> */}
+          <th>Height</th>
+          <th>Weight</th>
+          <th>Type</th>
         </tr>
       </thead>
       <tbody>
-        {pokemons.map((pokemon, i) => {
-          return (
-            <tr>
-              <td>{i + 1}</td>
-              <td>{pokemon.name}</td>
-              {/* <td>{pokemon.url}</td> */}
-              {/* <td>@mdo</td> */}
-            </tr>
-          )
-        })}
+        {pokemons.length &&
+          pokemons.map((poke) => {
+            const { id, name, height, weight, types } = poke
+            return (
+              <tr key={id}>
+                <td>{id}</td>
+                <td>{name}</td>
+                <td>{height}</td>
+                <td>{weight}</td>
+                <td></td>
+              </tr>
+            )
+          })}
       </tbody>
     </Table>
   )
