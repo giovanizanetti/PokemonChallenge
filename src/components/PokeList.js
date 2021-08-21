@@ -1,52 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Table from 'react-bootstrap/Table'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
   const history = useHistory()
+  const [shouldUpdate, setShouldUpdate] = useState(true)
 
   useEffect(() => {
-    if (!pokemons.length) {
-      const fetchPokeDetails = (data) => {
-        const list = []
-
-        data.forEach((poke) =>
-          axios
-            .get(`https://pokeapi.co/api/v2/pokemon/${poke.name}`)
-            .then((res) => {
-              const { id, name, height, weight, types } = res.data
-
-              return {
-                id,
-                name,
-                height,
-                weight,
-                types,
-              }
-            })
-            .then((poke) => {
-              list.push(poke)
-              setPokemons(list)
-            })
-            .catch((err) => console.log(err))
-        )
-      }
-
-      const fetchPokemon = async () => {
-        try {
-          const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
-          const data = await response.data.results
-          fetchPokeDetails(data)
-        } catch (err) {
-          console.log(err)
-        }
-      }
-
-      fetchPokemon()
+    // if (shouldUpdate) {
+    const fetchPokeDetails = (data) => {
+      const list = []
+      data.forEach((poke) =>
+        axios
+          .get(poke.url)
+          .then((res) => {
+            setPokemons((prevState) => prevState.concat([res.data]))
+          })
+          .catch((err) => console.log(err))
+      )
     }
-  }, [pokemons])
+
+    const fetchPokemon = () => {
+      axios
+        .get('https://pokeapi.co/api/v2/pokemon')
+        .then((res) => res.data.results)
+        .then((data) => fetchPokeDetails(data))
+        .catch((err) => console.log(err))
+    }
+
+    fetchPokemon()
+    setShouldUpdate(false)
+    // }
+  }, [])
 
   //TODO: push id to router
   const handleClick = (id) => history.push(`/${id}`)
@@ -58,25 +45,19 @@ export default function PokeList() {
 
   const displayPokemons = () => {
     return (
-      pokemons &&
-      pokemons
-        .sort(function (a, b) {
-          return a.id - b.id
-        })
-        .map((poke) => {
-          const { id, name, height, weight, types } = poke
-          return (
-            // <Link style={{ textDecoration: 'none' }} to={`/${id}`}>
-            <tr onClick={() => handleClick(id)} key={id}>
-              <td>{id}</td>
-              <td>{name}</td>
-              <td>{height}</td>
-              <td>{weight}</td>
-              <td>{formatTypes(types)}</td>
-            </tr>
-            // </Link>
-          )
-        })
+      pokemons !== null &&
+      pokemons.map((poke) => {
+        const { id, name, height, weight, types } = poke
+        return (
+          <tr onClick={() => handleClick(id)} key={id}>
+            <td>{id}</td>
+            <td>{name}</td>
+            <td>{height}</td>
+            <td>{weight}</td>
+            <td>{formatTypes(types)}</td>
+          </tr>
+        )
+      })
     )
   }
 

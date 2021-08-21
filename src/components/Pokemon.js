@@ -4,22 +4,20 @@ import { Card, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 
 export default function PokeList() {
-  const [pokemon, setPokemon] = useState()
   const { id } = useParams()
+  const [pokemon, setPokemon] = useState()
   useEffect(() => {
-    if (!id.length) {
-      const fetchPokemon = async () => {
-        try {
-          const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
-          const data = await response.data
-          console.log(data)
-          setPokemon(data)
-        } catch (err) {
-          console.log(err)
-        }
+    const fetchPokemon = async () => {
+      try {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
+        const data = await response.data
+        console.log(data)
+        setPokemon(data)
+      } catch (err) {
+        console.log(err)
       }
-      fetchPokemon()
     }
+    fetchPokemon()
   }, [id])
 
   return (
