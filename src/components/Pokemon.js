@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 
 export default function PokeList() {
+  const [pokemon, setPokemon] = useState()
+  const { id } = useParams()
   useEffect(() => {
-    // const fetchPokemon = async () => {
-    //   const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
-    //   const data = await response.data.results
-    //   await console.log(response)
-    //   setPokemons(data)
-    // }
-    // fetchPokemon()
-  }, [])
+    if (!id.length) {
+      const fetchPokemon = async () => {
+        try {
+          const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
+          const data = await response.data
+          console.log(data)
+          setPokemon(data)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+      fetchPokemon()
+    }
+  }, [id])
 
   return (
     <Card style={{ width: '18rem' }}>
       <ListGroup variant='flush'>
-        <ListGroupItem>Cras justo odio</ListGroupItem>
-        <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
-        <ListGroupItem>Vestibulum at eros</ListGroupItem>
+        <ListGroupItem className='text-uppercase'>{pokemon.name}</ListGroupItem>
+        <ListGroupItem>
+          Heigth is <span className='text-capitalize'>{pokemon.height}</span>
+        </ListGroupItem>
+        <ListGroupItem>
+          Weight is <span className='text-capitalize'>{pokemon.weight}</span>
+        </ListGroupItem>
       </ListGroup>
     </Card>
   )

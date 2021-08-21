@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Table from 'react-bootstrap/Table'
+import { Link, useHistory } from 'react-router-dom'
 
 export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
+  const history = useHistory()
 
   useEffect(() => {
     if (!pokemons.length) {
@@ -46,6 +48,9 @@ export default function PokeList() {
     }
   }, [pokemons])
 
+  //TODO: push id to router
+  const handleClick = (id) => history.push(`/${id}`)
+
   // If more them one type add comma between
   const formatTypes = (types) => {
     return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
@@ -61,13 +66,15 @@ export default function PokeList() {
         .map((poke) => {
           const { id, name, height, weight, types } = poke
           return (
-            <tr key={id}>
+            // <Link style={{ textDecoration: 'none' }} to={`/${id}`}>
+            <tr onClick={() => handleClick(id)} key={id}>
               <td>{id}</td>
               <td>{name}</td>
               <td>{height}</td>
               <td>{weight}</td>
               <td>{formatTypes(types)}</td>
             </tr>
+            // </Link>
           )
         })
     )
