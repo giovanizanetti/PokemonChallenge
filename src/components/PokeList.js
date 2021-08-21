@@ -6,12 +6,20 @@ export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
 
   useEffect(() => {
+    const fetchPokeDetails = async (data) => {
+      data.map(async (poke) => {
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${poke.name}`)
+        console.log(response)
+      })
+    }
+
     const fetchPokemon = async () => {
       const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
       const data = await response.data.results
-      await console.log(response)
+      fetchPokeDetails(data)
       setPokemons(data)
     }
+
     fetchPokemon()
   }, [])
 
