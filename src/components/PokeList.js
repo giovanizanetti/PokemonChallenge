@@ -46,23 +46,31 @@ export default function PokeList() {
     }
   }, [pokemons])
 
+  const formatTypes = (types) => {
+    console.log(types.at(-1))
+    return types.map((type) => type.type.name + ', ')
+  }
+
   const displayPokemons = () => {
-    return pokemons
-      .sort(function (a, b) {
-        return a.id - b.id
-      })
-      .map((poke) => {
-        const { id, name, height, weight, types } = poke
-        return (
-          <tr key={id}>
-            <td>{id}</td>
-            <td>{name}</td>
-            <td>{height}</td>
-            <td>{weight}</td>
-            <td></td>
-          </tr>
-        )
-      })
+    return (
+      pokemons &&
+      pokemons
+        .sort(function (a, b) {
+          return a.id - b.id
+        })
+        .map((poke) => {
+          const { id, name, height, weight, types } = poke
+          return (
+            <tr key={id}>
+              <td>{id}</td>
+              <td>{name}</td>
+              <td>{height}</td>
+              <td>{weight}</td>
+              <td>{formatTypes(types)}</td>
+            </tr>
+          )
+        })
+    )
   }
 
   return (
