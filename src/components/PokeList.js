@@ -21,8 +21,8 @@ export default function PokeList() {
         <tr>
           <th>#</th>
           <th>Name</th>
-          <th>URL</th>
-          <th>Username</th>
+          {/* <th>URL</th>
+          <th>Username</th> */}
         </tr>
       </thead>
       <tbody>
@@ -31,8 +31,8 @@ export default function PokeList() {
             <tr>
               <td>{i + 1}</td>
               <td>{pokemon.name}</td>
-              <td>{pokemon.url}</td>
-              <td>@mdo</td>
+              {/* <td>{pokemon.url}</td> */}
+              {/* <td>@mdo</td> */}
             </tr>
           )
         })}
