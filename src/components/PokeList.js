@@ -6,37 +6,85 @@ export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
 
   useEffect(() => {
-    const fetchPokemon = async () => {
-      const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
-      const data = await response.data.results
-      await console.log(response)
-      setPokemons(data)
+    if (!pokemons.length) {
+      const fetchPokeDetails = (data) => {
+        const list = []
+
+        data.forEach((poke) =>
+          axios
+            .get(`https://pokeapi.co/api/v2/pokemon/${poke.name}`)
+            .then((res) => {
+              const { id, name, height, weight, types } = res.data
+
+              return {
+                id,
+                name,
+                height,
+                weight,
+                types,
+              }
+            })
+            .then((poke) => {
+              list.push(poke)
+              setPokemons(list)
+            })
+            .catch((err) => console.log(err))
+        )
+      }
+
+      const fetchPokemon = async () => {
+        try {
+          const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
+          const data = await response.data.results
+          fetchPokeDetails(data)
+        } catch (err) {
+          console.log(err)
+        }
+      }
+
+      fetchPokemon()
     }
-    fetchPokemon()
-  }, [])
+  }, [pokemons])
+
+  // If more them one type add comma in between
+  const formatTypes = (types) => {
+    return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
+  }
+
+  const displayPokemons = () => {
+    return (
+      pokemons &&
+      pokemons
+        .sort(function (a, b) {
+          return a.id - b.id
+        })
+        .map((poke) => {
+          const { id, name, height, weight, types } = poke
+          return (
+            <tr key={id}>
+              <td>{id}</td>
+              <td>{name}</td>
+              <td>{height}</td>
+              <td>{weight}</td>
+              <td>{formatTypes(types)}</td>
+            </tr>
+          )
+        })
+    )
+  }
 
   return (
     <Table striped bordered hover variant='dark'>
       <thead>
         <tr>
-          <th>#</th>
+          <th>ID</th>
           <th>Name</th>
-          <th>URL</th>
-          <th>Username</th>
+          <th>Height</th>
+          <th>Weight</th>
+          <th>Type</th>
         </tr>
       </thead>
-      <tbody>
-        {pokemons.map((pokemon, i) => {
-          return (
-            <tr>
-              <td>{i + 1}</td>
-              <td>{pokemon.name}</td>
-              <td>{pokemon.url}</td>
-              <td>@mdo</td>
-            </tr>
-          )
-        })}
-      </tbody>
+      <tbody>{displayPokemons()}</tbody>
     </Table>
   )
 }
