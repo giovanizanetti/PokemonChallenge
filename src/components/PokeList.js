@@ -46,6 +46,25 @@ export default function PokeList() {
     }
   }, [pokemons])
 
+  const displayPokemons = () => {
+    return pokemons
+      .sort(function (a, b) {
+        return a.id - b.id
+      })
+      .map((poke) => {
+        const { id, name, height, weight, types } = poke
+        return (
+          <tr key={id}>
+            <td>{id}</td>
+            <td>{name}</td>
+            <td>{height}</td>
+            <td>{weight}</td>
+            <td></td>
+          </tr>
+        )
+      })
+  }
+
   return (
     <Table striped bordered hover variant='dark'>
       <thead>
@@ -57,21 +76,7 @@ export default function PokeList() {
           <th>Type</th>
         </tr>
       </thead>
-      <tbody>
-        {pokemons.length &&
-          pokemons.map((poke) => {
-            const { id, name, height, weight, types } = poke
-            return (
-              <tr key={id}>
-                <td>{id}</td>
-                <td>{name}</td>
-                <td>{height}</td>
-                <td>{weight}</td>
-                <td></td>
-              </tr>
-            )
-          })}
-      </tbody>
+      <tbody>{displayPokemons()}</tbody>
     </Table>
   )
 }
