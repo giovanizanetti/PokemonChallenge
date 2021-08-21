@@ -47,8 +47,7 @@ export default function PokeList() {
   }, [pokemons])
 
   const formatTypes = (types) => {
-    console.log(types.at(-1))
-    return types.map((type) => type.type.name + ', ')
+    return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
   }
 
   const displayPokemons = () => {
