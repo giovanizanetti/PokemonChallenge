@@ -75,18 +75,6 @@ export default function PokeList() {
       })
   }
 
-  useEffect(() => console.log(active, 'from effect'), [active])
-
-  // const handlePageChange = (e) => {
-  //   console.log('pagination click', e.target.outerText)
-  //   setActive(e.target.outerText)
-  // }
-
-  // const handleActive = (e) => {
-  //   console.log(e.target.outerText)
-  //   // return number === active
-  // }
-
   return (
     <>
       <Table striped bordered hover variant='dark'>
@@ -102,9 +90,15 @@ export default function PokeList() {
         <tbody>{displayPokemons()}</tbody>
       </Table>
       <Pagination size='lg'>
-        {active > 1 && <Pagination.Prev onClick={() => setActive((prevState) => Number(prevState) - 1)} />}
+        <Pagination.Prev
+          disabled={active <= 1 && true}
+          onClick={() => setActive((prevState) => Number(prevState) - 1)}
+        />
         {paginationItems}
-        <Pagination.Next onClick={() => setActive((prevState) => Number(prevState) + 1)} />
+        <Pagination.Next
+          disabled={active >= paginationItems.length}
+          onClick={() => setActive((prevState) => Number(prevState) + 1)}
+        />
       </Pagination>
     </>
   )
