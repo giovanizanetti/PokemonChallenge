@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
   const history = useHistory()
+  const [itemsPerPage, setItemsPerPage] = useState(10)
 
   useEffect(() => {
     const fetchPokeDetails = (data) => {
@@ -21,7 +22,7 @@ export default function PokeList() {
 
     const fetchPokemon = () => {
       axios
-        .get('https://pokeapi.co/api/v2/pokemon')
+        .get(`https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}`)
         .then((res) => res.data.results)
         .then((data) => fetchPokeDetails(data))
         .catch((err) => console.log(err))
