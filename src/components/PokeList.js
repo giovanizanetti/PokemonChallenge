@@ -48,16 +48,24 @@ export default function PokeList() {
 
   //Handle pagination
   useEffect(() => {
+    // const goToSelectedPage = (pageNumber) => {
+    //   if (pageNumber == 1) {
+    //     return setCurrentPageUrl(BASE_URL)
+    //   }
+    //   setCurrentPageUrl(`${BASE_URL}&offset=${pageNumber}0`)
+    // }
+
     const goToSelectedPage = (pageNumber) => {
-      if (pageNumber == 1) {
-        return setCurrentPageUrl(BASE_URL)
-      }
-      setCurrentPageUrl(`${BASE_URL}&offset=${pageNumber}0`)
+      const startIndex = pageNumber * itemsPerPage - itemsPerPage
+      const endIndex = startIndex + itemsPerPage
+      setCurrentPageUrl(`${BASE_URL}&offset=${startIndex}`)
+      // return pokemons.slice(startIndex, endIndex)
     }
 
     const displayPageButtons = () => {
       let items = []
-      for (let number = 1; number <= itemsPerPage; number++) {
+      //hardcoded total number of buttuns
+      for (let number = 1; number <= 10; number++) {
         items.push(
           <Pagination.Item
             key={number}
@@ -95,6 +103,11 @@ export default function PokeList() {
       })
   }
 
+  const handleItemsPerPage = (e) => {
+    setItemsPerPage(e.target.text)
+    console.log(e.target.text)
+  }
+
   return (
     <>
       <Table striped bordered hover variant='dark'>
@@ -111,11 +124,15 @@ export default function PokeList() {
       </Table>
 
       <DropdownButton id={`dropdown-variants-warning`} title='item per page'>
-        <Dropdown.Item eventKey='1'>5</Dropdown.Item>
-        <Dropdown.Item eventKey='2' active>
+        <Dropdown.Item onClick={handleItemsPerPage} eventKey='1' active={itemsPerPage == 5}>
+          5
+        </Dropdown.Item>
+        <Dropdown.Item onClick={handleItemsPerPage} eventKey='2' active={itemsPerPage == 10}>
           10
         </Dropdown.Item>
-        <Dropdown.Item eventKey='3'>50</Dropdown.Item>
+        <Dropdown.Item onClick={handleItemsPerPage} eventKey='3' active={itemsPerPage == 50}>
+          50
+        </Dropdown.Item>
       </DropdownButton>
 
       <Pagination size='md'>
