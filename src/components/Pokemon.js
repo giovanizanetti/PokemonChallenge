@@ -18,19 +18,21 @@ export default function PokeList() {
       }
     }
     fetchPokemon()
-  }, [id])
+  }, [])
 
   return (
     <Card style={{ width: '18rem' }}>
-      <ListGroup variant='flush'>
-        <ListGroupItem className='text-uppercase'>{pokemon.name}</ListGroupItem>
-        <ListGroupItem>
-          Heigth is <span className='text-capitalize'>{pokemon.height}</span>
-        </ListGroupItem>
-        <ListGroupItem>
-          Weight is <span className='text-capitalize'>{pokemon.weight}</span>
-        </ListGroupItem>
-      </ListGroup>
+      {pokemon && (
+        <ListGroup variant='flush'>
+          <ListGroupItem className='text-uppercase'>{pokemon.name}</ListGroupItem>
+          <ListGroupItem>
+            Heigth is <span className='text-capitalize'>{pokemon.height}</span>
+          </ListGroupItem>
+          <ListGroupItem>
+            Weight is <span className='text-capitalize'>{pokemon.weight}</span>
+          </ListGroupItem>
+        </ListGroup>
+      )}
     </Card>
   )
 }
