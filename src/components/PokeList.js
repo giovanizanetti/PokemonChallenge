@@ -47,7 +47,7 @@ export default function PokeList() {
       let items = []
       for (let number = 1; number <= itemsPerPage; number++) {
         items.push(
-          <Pagination.Item key={number} active={number == active}>
+          <Pagination.Item key={number} onClick={(e) => setActive(e.target.innerText)} active={number == active}>
             {number}
           </Pagination.Item>
         )
@@ -75,15 +75,17 @@ export default function PokeList() {
       })
   }
 
+  useEffect(() => console.log(active, 'from effect'), [active])
+
   // const handlePageChange = (e) => {
   //   console.log('pagination click', e.target.outerText)
   //   setActive(e.target.outerText)
   // }
 
-  const handleActive = (e) => {
-    console.log(e.target.outerText)
-    // return number === active
-  }
+  // const handleActive = (e) => {
+  //   console.log(e.target.outerText)
+  //   // return number === active
+  // }
 
   return (
     <>
@@ -99,15 +101,10 @@ export default function PokeList() {
         </thead>
         <tbody>{displayPokemons()}</tbody>
       </Table>
-      <Pagination
-        onClick={(e) => {
-          setActive(e.target.innerText)
-        }}
-        size='lg'
-      >
+      <Pagination size='lg'>
         <Pagination.Prev />
         {paginationItems}
-        <Pagination.Next />
+        <Pagination.Next onClick={() => setActive((prevState) => Number(prevState) + 1)} />
       </Pagination>
     </>
   )
