@@ -27,7 +27,7 @@ export default function PokeList() {
   const displayTypes = (types) => {
     return (
       <ListGroupItem>
-        <div>{`${types.length > 1 ? 'Types are: ' : ' Type is '}`}</div>
+        <span className='text-nowrap'>{`${types.length > 1 ? 'Types: ' : 'Type: '}`}</span>
         <strong style={{ float: 'right' }} className='text-capitalize'>
           {formatTypes(types)}
         </strong>
@@ -41,7 +41,7 @@ export default function PokeList() {
       {
         // const { name, height, weight, types } = pokemon && pokemon
         pokemon && (
-          <Card style={{ width: '18rem' }}>
+          <Card>
             <ListGroup variant='flush'>
               <ListGroupItem className='text-uppercase'>
                 <span style={{ marginLeft: '2rem' }} className='d-flex align-items-center justify-content-around'>
@@ -50,22 +50,25 @@ export default function PokeList() {
                 </span>
               </ListGroupItem>
               <ListGroupItem>
-                ID is <strong className='text-capitalize '>{id}</strong>
+                ID
+                <strong style={{ float: 'right' }} className='text-capitalize '>
+                  {id}
+                </strong>
               </ListGroupItem>
               <ListGroupItem>
-                Heigth is{' '}
+                Heigth
                 <strong style={{ float: 'right' }} className='text-capitalize'>
                   {pokemon.height}
                 </strong>
               </ListGroupItem>
               <ListGroupItem>
-                Weight is{' '}
+                Weight
                 <strong style={{ float: 'right' }} className='text-capitalize'>
                   {pokemon.weight}
                 </strong>
               </ListGroupItem>
               <ListGroupItem>
-                Weight is{' '}
+                Weight
                 <strong style={{ float: 'right' }} className='text-capitalize'>
                   {pokemon.weight}
                 </strong>

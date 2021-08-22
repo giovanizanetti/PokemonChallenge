@@ -8,7 +8,6 @@ function App() {
     <div>
       <Router>
         <Nav
-          // style={{ height: '4rem' }}
           className='bg-warning w-100 d-flex justify-content-end p-4 align-items-center h-30'
           activeKey='/home'
           onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
