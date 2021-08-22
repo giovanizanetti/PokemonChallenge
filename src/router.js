@@ -1,7 +1,8 @@
 import React from 'react'
-import { BrowserRouter as Switch, Route } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
 import PokeList from './components/PokeList'
 import Pokemon from './components/Pokemon'
+// import Nav from 'react-bootstrap/Nav'
 
 export default function BasicExample() {
   return (

@@ -16,6 +16,7 @@ function App() {
             <span className='m-5'>Home</span>
           </NavLink>
         </Nav>
+
         <div className='App-body'>
           <Route />
         </div>

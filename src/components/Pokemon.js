@@ -11,7 +11,6 @@ export default function PokeList() {
       try {
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
         const data = await response.data
-        await console.log(response.data.sprites.front_shiny)
         setPokemon(data)
       } catch (err) {
         console.log(err)
