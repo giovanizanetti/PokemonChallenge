@@ -51,7 +51,13 @@ export default function PokeList() {
 
   //Handle pagination
   useEffect(() => {
-    const goToSelectedPage = (pageNumber) => setCurrentPageUrl(`${baseUrl}&offset=${pageNumber}0`)
+    const goToSelectedPage = (pageNumber) => {
+      if (pageNumber == 1) {
+        console.log('this is the base url: ', baseUrl)
+        return setCurrentPageUrl(baseUrl)
+      }
+      setCurrentPageUrl(`${baseUrl}&offset=${pageNumber}0`)
+    }
 
     const displayPageButtons = () => {
       let items = []
