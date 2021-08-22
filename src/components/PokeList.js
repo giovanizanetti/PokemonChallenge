@@ -49,6 +49,15 @@ export default function PokeList() {
   //Handle pagination
   useEffect(() => {
     const goToSelectedPage = (pageNumber) => {
+      /* When the user clicks on the curret page 'current' is appended to the active page state.
+       Therefore I check if current page I do not change page the page.
+       At the same time is necessery to remove the current string and reassing the state without 
+      the word 'current', so active state is still applied to the page button
+    */
+      if (pageNumber.includes('current')) {
+        return setActive(pageNumber[0])
+      }
+
       const startIndex = pageNumber * itemsPerPage - itemsPerPage
       setCurrentPageUrl(`${baseUrl}&offset=${startIndex}`)
     }
@@ -95,11 +104,9 @@ export default function PokeList() {
   }
 
   const handleItemsPerPage = (e) => {
-    e.target.blur()
     setItemsPerPage(e.target.text)
     setCurrentPageUrl(`https://pokeapi.co/api/v2/pokemon/?limit=${e.target.text}`)
     setBaseUrl(`https://pokeapi.co/api/v2/pokemon/?limit=${e.target.text}`)
-    console.log(e.target.text)
   }
 
   return (
@@ -117,35 +124,37 @@ export default function PokeList() {
         <tbody>{displayPokemons()}</tbody>
       </Table>
 
-      <DropdownButton id={`dropdown-variants-warning`} title='item per page'>
-        <Dropdown.Item onClick={handleItemsPerPage} eventKey='1' active={itemsPerPage == 5}>
-          5
-        </Dropdown.Item>
-        <Dropdown.Item onClick={handleItemsPerPage} eventKey='2' active={itemsPerPage == 10}>
-          10
-        </Dropdown.Item>
-        <Dropdown.Item onClick={handleItemsPerPage} eventKey='3' active={itemsPerPage == 50}>
-          50
-        </Dropdown.Item>
-      </DropdownButton>
+      <div className='d-flex justify-content-around w-80'>
+        <DropdownButton onClick={(e) => e.target.blur()} id={`dropdown-variants-warning`} title='item per page'>
+          <Dropdown.Item onClick={handleItemsPerPage} eventKey='1' active={itemsPerPage == 5}>
+            5
+          </Dropdown.Item>
+          <Dropdown.Item onClick={handleItemsPerPage} eventKey='2' active={itemsPerPage == 10}>
+            10
+          </Dropdown.Item>
+          <Dropdown.Item onClick={handleItemsPerPage} eventKey='3' active={itemsPerPage == 50}>
+            50
+          </Dropdown.Item>
+        </DropdownButton>
 
-      <Pagination size='md'>
-        <Pagination.Prev
-          disabled={active <= 1 && true}
-          onClick={() => {
-            setCurrentPageUrl(previousPageUrl)
-            setActive((prevState) => Number(prevState) - 1)
-          }}
-        />
-        {paginationItems}
-        <Pagination.Next
-          disabled={active >= paginationItems.length}
-          onClick={(e) => {
-            setCurrentPageUrl(nextPageUrl)
-            setActive((prevState) => Number(prevState) + 1)
-          }}
-        />
-      </Pagination>
+        <Pagination size='md'>
+          <Pagination.Prev
+            disabled={active <= 1 && true}
+            onClick={() => {
+              setCurrentPageUrl(previousPageUrl)
+              setActive((prevState) => Number(prevState) - 1)
+            }}
+          />
+          {paginationItems}
+          <Pagination.Next
+            disabled={active >= paginationItems.length}
+            onClick={(e) => {
+              setCurrentPageUrl(nextPageUrl)
+              setActive((prevState) => Number(prevState) + 1)
+            }}
+          />
+        </Pagination>
+      </div>
     </>
   )
 }
