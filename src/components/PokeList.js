@@ -9,12 +9,14 @@ export default function PokeList() {
 
   useEffect(() => {
     const fetchPokeDetails = (data) => {
+      const list = []
       data.forEach((poke) =>
         axios
           .get(poke.url)
-          .then((res) => setPokemons((prevState) => prevState.concat([res.data])))
+          .then((res) => setPokemons((list) => list.concat([res.data])))
           .catch((err) => console.log(err))
       )
+      setPokemons(list)
     }
 
     const fetchPokemon = () => {
@@ -24,7 +26,6 @@ export default function PokeList() {
         .then((data) => fetchPokeDetails(data))
         .catch((err) => console.log(err))
     }
-
     fetchPokemon()
   }, [])
 
@@ -37,9 +38,9 @@ export default function PokeList() {
   }
 
   const displayPokemons = () => {
-    return (
-      pokemons !== null &&
-      pokemons.map((poke) => {
+    return pokemons
+      .sort((a, b) => a.id - b.id)
+      .map((poke) => {
         const { id, name, height, weight, types } = poke
         return (
           <tr style={{ cursor: 'pointer' }} onClick={() => handleClick(id)} key={id}>
@@ -51,7 +52,6 @@ export default function PokeList() {
           </tr>
         )
       })
-    )
   }
 
   return (
