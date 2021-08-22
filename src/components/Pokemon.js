@@ -11,6 +11,7 @@ export default function PokeList() {
       try {
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
         const data = await response.data
+        await console.log(response.data.sprites.front_shiny)
         setPokemon(data)
       } catch (err) {
         console.log(err)
@@ -27,36 +28,53 @@ export default function PokeList() {
     return (
       <ListGroupItem>
         <div>{`${types.length > 1 ? 'Types are: ' : ' Type is '}`}</div>
-        <strong className='text-capitalize'>{formatTypes(types)}</strong>
+        <strong style={{ float: 'right' }} className='text-capitalize'>
+          {formatTypes(types)}
+        </strong>
       </ListGroupItem>
     )
   }
 
   return (
-    <Card style={{ width: '18rem' }}>
+    // <Card style={{ width: '18rem' }}>
+    <>
       {
         // const { name, height, weight, types } = pokemon && pokemon
         pokemon && (
-          <ListGroup variant='flush'>
-            <ListGroupItem className='text-uppercase'>
-              <strong>{pokemon.name}</strong>
-            </ListGroupItem>
-            <ListGroupItem>
-              ID is <strong className='text-capitalize '>{id}</strong>
-            </ListGroupItem>
-            <ListGroupItem>
-              Heigth is <strong className='text-capitalize'>{pokemon.height}</strong>
-            </ListGroupItem>
-            <ListGroupItem>
-              Weight is <strong className='text-capitalize'>{pokemon.weight}</strong>
-            </ListGroupItem>
-            <ListGroupItem>
-              Weight is <strong className='text-capitalize'>{pokemon.weight}</strong>
-            </ListGroupItem>
-            {displayTypes(pokemon.types)}
-          </ListGroup>
+          <Card style={{ width: '18rem' }}>
+            <ListGroup variant='flush'>
+              <ListGroupItem className='text-uppercase'>
+                <span style={{ marginLeft: '2rem' }} className='d-flex align-items-center justify-content-around'>
+                  <strong>{pokemon.name}</strong>
+                  <img className='h-2' src={`${pokemon.sprites.front_shiny}`} />
+                </span>
+              </ListGroupItem>
+              <ListGroupItem>
+                ID is <strong className='text-capitalize '>{id}</strong>
+              </ListGroupItem>
+              <ListGroupItem>
+                Heigth is{' '}
+                <strong style={{ float: 'right' }} className='text-capitalize'>
+                  {pokemon.height}
+                </strong>
+              </ListGroupItem>
+              <ListGroupItem>
+                Weight is{' '}
+                <strong style={{ float: 'right' }} className='text-capitalize'>
+                  {pokemon.weight}
+                </strong>
+              </ListGroupItem>
+              <ListGroupItem>
+                Weight is{' '}
+                <strong style={{ float: 'right' }} className='text-capitalize'>
+                  {pokemon.weight}
+                </strong>
+              </ListGroupItem>
+              {displayTypes(pokemon.types)}
+            </ListGroup>
+          </Card>
         )
       }
-    </Card>
+    </>
   )
 }
