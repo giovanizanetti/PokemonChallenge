@@ -10,6 +10,7 @@ export default function PokeList() {
   const [active, setActive] = useState(1)
   const [paginationItems, setPaginationItems] = useState([])
 
+  //Handle API request
   useEffect(() => {
     const fetchPokeDetails = (data) => {
       const list = []
@@ -40,6 +41,7 @@ export default function PokeList() {
     return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
   }
 
+  //Handle pagination
   useEffect(() => {
     const displayPageButtons = () => {
       let items = []
