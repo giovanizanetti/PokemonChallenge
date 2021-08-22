@@ -11,28 +11,52 @@ export default function PokeList() {
       try {
         const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
         const data = await response.data
-        console.log(data)
         setPokemon(data)
       } catch (err) {
         console.log(err)
       }
     }
     fetchPokemon()
-  }, [])
+  }, [id])
+
+  const formatTypes = (types) => {
+    return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
+  }
+
+  const displayTypes = (types) => {
+    return (
+      <ListGroupItem>
+        <div>{`${types.length > 1 ? 'Types are: ' : ' Type is '}`}</div>
+        <strong className='text-capitalize'>{formatTypes(types)}</strong>
+      </ListGroupItem>
+    )
+  }
 
   return (
     <Card style={{ width: '18rem' }}>
-      {pokemon && (
-        <ListGroup variant='flush'>
-          <ListGroupItem className='text-uppercase'>{pokemon.name}</ListGroupItem>
-          <ListGroupItem>
-            Heigth is <span className='text-capitalize'>{pokemon.height}</span>
-          </ListGroupItem>
-          <ListGroupItem>
-            Weight is <span className='text-capitalize'>{pokemon.weight}</span>
-          </ListGroupItem>
-        </ListGroup>
-      )}
+      {
+        // const { name, height, weight, types } = pokemon && pokemon
+        pokemon && (
+          <ListGroup variant='flush'>
+            <ListGroupItem className='text-uppercase'>
+              <strong>{pokemon.name}</strong>
+            </ListGroupItem>
+            <ListGroupItem>
+              ID is <strong className='text-capitalize '>{id}</strong>
+            </ListGroupItem>
+            <ListGroupItem>
+              Heigth is <strong className='text-capitalize'>{pokemon.height}</strong>
+            </ListGroupItem>
+            <ListGroupItem>
+              Weight is <strong className='text-capitalize'>{pokemon.weight}</strong>
+            </ListGroupItem>
+            <ListGroupItem>
+              Weight is <strong className='text-capitalize'>{pokemon.weight}</strong>
+            </ListGroupItem>
+            {displayTypes(pokemon.types)}
+          </ListGroup>
+        )
+      }
     </Card>
   )
 }
