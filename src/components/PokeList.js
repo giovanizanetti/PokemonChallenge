@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import Table from 'react-bootstrap/Table'
+import { Table, Pagination } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
 export default function PokeList() {
@@ -28,7 +28,7 @@ export default function PokeList() {
         .catch((err) => console.log(err))
     }
     fetchPokemon()
-  }, [])
+  }, [itemsPerPage])
 
   //Take to the Pokemon route
   const handleClick = (id) => history.push(`/${id}`)
@@ -55,18 +55,35 @@ export default function PokeList() {
       })
   }
 
+  let active = 2
+  let items = []
+  for (let number = 1; number <= itemsPerPage; number++) {
+    items.push(
+      <Pagination.Item key={number} active={number === active}>
+        {number}
+      </Pagination.Item>
+    )
+  }
+
   return (
-    <Table striped bordered hover variant='dark'>
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Height</th>
-          <th>Weight</th>
-          <th>Type</th>
-        </tr>
-      </thead>
-      <tbody>{displayPokemons()}</tbody>
-    </Table>
+    <>
+      <Table striped bordered hover variant='dark'>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Height</th>
+            <th>Weight</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>{displayPokemons()}</tbody>
+      </Table>
+      <Pagination size='lg'>
+        <Pagination.Prev />
+        {items}
+        <Pagination.Next />
+      </Pagination>
+    </>
   )
 }
