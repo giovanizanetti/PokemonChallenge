@@ -104,6 +104,7 @@ export default function PokeList() {
   }
 
   const handleItemsPerPage = (e) => {
+    e.target.blur()
     setItemsPerPage(e.target.text)
     console.log(e.target.text)
   }
