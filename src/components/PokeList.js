@@ -9,8 +9,8 @@ export default function PokeList() {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [active, setActive] = useState(1)
   const [paginationItems, setPaginationItems] = useState([])
-  const baseUrl = `https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}`
-  const [currentPageUrl, setCurrentPageUrl] = useState(baseUrl)
+  const BASE_URL = `https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}`
+  const [currentPageUrl, setCurrentPageUrl] = useState(BASE_URL)
   const [nextPageUrl, setNextPageUrl] = useState()
   const [previousPageUrl, setPreviousPageUrl] = useState()
 
@@ -41,9 +41,6 @@ export default function PokeList() {
     fetchPokemon()
   }, [itemsPerPage, currentPageUrl])
 
-  //Take to the Pokemon route
-  const handleClick = (id) => history.push(`/${id}`)
-
   // If more them one type add comma between
   const formatTypes = (types) => {
     return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
@@ -53,10 +50,9 @@ export default function PokeList() {
   useEffect(() => {
     const goToSelectedPage = (pageNumber) => {
       if (pageNumber == 1) {
-        console.log('this is the base url: ', baseUrl)
-        return setCurrentPageUrl(baseUrl)
+        return setCurrentPageUrl(BASE_URL)
       }
-      setCurrentPageUrl(`${baseUrl}&offset=${pageNumber}0`)
+      setCurrentPageUrl(`${BASE_URL}&offset=${pageNumber}0`)
     }
 
     const displayPageButtons = () => {
@@ -80,7 +76,7 @@ export default function PokeList() {
     }
 
     displayPageButtons()
-  }, [active, itemsPerPage, nextPageUrl])
+  }, [active, itemsPerPage, nextPageUrl, BASE_URL])
 
   const displayPokemons = () => {
     return pokemons
@@ -88,7 +84,7 @@ export default function PokeList() {
       .map((poke) => {
         const { id, name, height, weight, types } = poke
         return (
-          <tr style={{ cursor: 'pointer' }} onClick={() => handleClick(id)} key={id}>
+          <tr style={{ cursor: 'pointer' }} onClick={() => history.push(`/${id}`)} key={id}>
             <td>{id}</td>
             <td>{name}</td>
             <td>{height}</td>
@@ -133,4 +129,3 @@ export default function PokeList() {
     </>
   )
 }
-// const goToNextPage = (url) => setCurrentPageUrl(nextPageUrl)
