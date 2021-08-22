@@ -11,6 +11,7 @@ export default function PokeList() {
   const [paginationItems, setPaginationItems] = useState([])
   const [currentPageUrl, setCurrentPageUrl] = useState(`https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}`)
   const [nextPageUrl, setNextPageUrl] = useState()
+  const [previousPageUrl, setPreviousPageUrl] = useState()
 
   //Handle API request
   useEffect(() => {
@@ -29,7 +30,9 @@ export default function PokeList() {
       axios
         .get(currentPageUrl)
         .then((res) => {
+          console.log(res.data)
           setNextPageUrl(res.data.next)
+          setPreviousPageUrl(res.data.previous)
           return res.data.results
         })
         .then((data) => fetchPokeDetails(data))
@@ -49,6 +52,7 @@ export default function PokeList() {
   //Handle pagination
   useEffect(() => {
     const goToNextPage = (url) => setCurrentPageUrl(nextPageUrl)
+
     const displayPageButtons = () => {
       let items = []
       for (let number = 1; number <= itemsPerPage; number++) {
@@ -68,6 +72,7 @@ export default function PokeList() {
       setPaginationItems(items)
       return items
     }
+
     displayPageButtons()
   }, [active, itemsPerPage, nextPageUrl])
 
@@ -105,14 +110,21 @@ export default function PokeList() {
       <Pagination size='lg'>
         <Pagination.Prev
           disabled={active <= 1 && true}
-          onClick={() => setActive((prevState) => Number(prevState) - 1)}
+          onClick={() => {
+            setCurrentPageUrl(previousPageUrl)
+            setActive((prevState) => Number(prevState) - 1)
+          }}
         />
         {paginationItems}
         <Pagination.Next
           disabled={active >= paginationItems.length}
-          onClick={() => setActive((prevState) => Number(prevState) + 1)}
+          onClick={() => {
+            setCurrentPageUrl(nextPageUrl)
+            setActive((prevState) => Number(prevState) + 1)
+          }}
         />
       </Pagination>
     </>
   )
 }
+// const goToNextPage = (url) => setCurrentPageUrl(nextPageUrl)
