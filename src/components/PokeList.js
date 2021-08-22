@@ -102,7 +102,7 @@ export default function PokeList() {
         <tbody>{displayPokemons()}</tbody>
       </Table>
       <Pagination size='lg'>
-        <Pagination.Prev onClick={() => setActive((prevState) => Number(prevState) - 1)} />
+        {active > 1 && <Pagination.Prev onClick={() => setActive((prevState) => Number(prevState) - 1)} />}
         {paginationItems}
         <Pagination.Next onClick={() => setActive((prevState) => Number(prevState) + 1)} />
       </Pagination>
