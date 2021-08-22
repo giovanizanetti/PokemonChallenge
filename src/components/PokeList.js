@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Table, Pagination } from 'react-bootstrap'
+import { Table, Pagination, Dropdown, DropdownButton } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
 
 export default function PokeList() {
@@ -109,6 +109,15 @@ export default function PokeList() {
         </thead>
         <tbody>{displayPokemons()}</tbody>
       </Table>
+
+      <DropdownButton id={`dropdown-variants-warning`} title='item per page'>
+        <Dropdown.Item eventKey='1'>5</Dropdown.Item>
+        <Dropdown.Item eventKey='2' active>
+          10
+        </Dropdown.Item>
+        <Dropdown.Item eventKey='3'>50</Dropdown.Item>
+      </DropdownButton>
+
       <Pagination size='md'>
         <Pagination.Prev
           disabled={active <= 1 && true}
