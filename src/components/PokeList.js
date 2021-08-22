@@ -40,7 +40,21 @@ export default function PokeList() {
     return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
   }
 
-  useEffect(() => {}, [active])
+  useEffect(() => {
+    const displayPageButtons = () => {
+      let items = []
+      for (let number = 1; number <= itemsPerPage; number++) {
+        items.push(
+          <Pagination.Item key={number} active={number == active}>
+            {number}
+          </Pagination.Item>
+        )
+      }
+      setPaginationItems(items)
+      return items
+    }
+    displayPageButtons()
+  }, [active, itemsPerPage])
 
   const displayPokemons = () => {
     return pokemons
@@ -59,21 +73,14 @@ export default function PokeList() {
       })
   }
 
-  const handlePageChange = (page) => {
-    console.log('pagination click', page)
-    setActive(page)
-  }
+  // const handlePageChange = (e) => {
+  //   console.log('pagination click', e.target.outerText)
+  //   setActive(e.target.outerText)
+  // }
 
-  const displayPageButtons = () => {
-    let items = []
-    for (let number = 1; number <= itemsPerPage; number++) {
-      items.push(
-        <Pagination.Item onClick={() => handlePageChange(active)} key={number} active={number === active}>
-          {number}
-        </Pagination.Item>
-      )
-    }
-    return items
+  const handleActive = (e) => {
+    console.log(e.target.outerText)
+    // return number === active
   }
 
   return (
@@ -90,9 +97,14 @@ export default function PokeList() {
         </thead>
         <tbody>{displayPokemons()}</tbody>
       </Table>
-      <Pagination size='lg'>
+      <Pagination
+        onClick={(e) => {
+          setActive(e.target.innerText)
+        }}
+        size='lg'
+      >
         <Pagination.Prev />
-        {displayPageButtons()}
+        {paginationItems}
         <Pagination.Next />
       </Pagination>
     </>
