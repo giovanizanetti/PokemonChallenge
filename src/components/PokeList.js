@@ -7,6 +7,8 @@ export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
   const history = useHistory()
   const [itemsPerPage, setItemsPerPage] = useState(10)
+  const [active, setActive] = useState(1)
+  const [paginationItems, setPaginationItems] = useState([])
 
   useEffect(() => {
     const fetchPokeDetails = (data) => {
@@ -38,6 +40,8 @@ export default function PokeList() {
     return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
   }
 
+  useEffect(() => {}, [active])
+
   const displayPokemons = () => {
     return pokemons
       .sort((a, b) => a.id - b.id)
@@ -55,14 +59,21 @@ export default function PokeList() {
       })
   }
 
-  let active = 2
-  let items = []
-  for (let number = 1; number <= itemsPerPage; number++) {
-    items.push(
-      <Pagination.Item key={number} active={number === active}>
-        {number}
-      </Pagination.Item>
-    )
+  const handlePageChange = (page) => {
+    console.log('pagination click', page)
+    setActive(page)
+  }
+
+  const displayPaginationOptions = () => {
+    let items = []
+    for (let number = 1; number <= itemsPerPage; number++) {
+      items.push(
+        <Pagination.Item onClick={() => handlePageChange(active)} key={number} active={number === active}>
+          {number}
+        </Pagination.Item>
+      )
+    }
+    return items
   }
 
   return (
@@ -81,7 +92,7 @@ export default function PokeList() {
       </Table>
       <Pagination size='lg'>
         <Pagination.Prev />
-        {items}
+        {displayPaginationOptions()}
         <Pagination.Next />
       </Pagination>
     </>
