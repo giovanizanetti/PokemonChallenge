@@ -124,7 +124,7 @@ export default function PokeList() {
         <tbody>{displayPokemons()}</tbody>
       </Table>
 
-      <div className='d-flex justify-content-around w-80'>
+      <div className='d-flex justify-content-around w-100'>
         <DropdownButton onClick={(e) => e.target.blur()} id={`dropdown-variants-warning`} title='item per page'>
           <Dropdown.Item onClick={handleItemsPerPage} eventKey='1' active={itemsPerPage == 5}>
             5
