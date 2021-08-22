@@ -6,18 +6,13 @@ import { useHistory } from 'react-router-dom'
 export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
   const history = useHistory()
-  const [shouldUpdate, setShouldUpdate] = useState(true)
 
   useEffect(() => {
-    // if (shouldUpdate) {
     const fetchPokeDetails = (data) => {
-      const list = []
       data.forEach((poke) =>
         axios
           .get(poke.url)
-          .then((res) => {
-            setPokemons((prevState) => prevState.concat([res.data]))
-          })
+          .then((res) => setPokemons((prevState) => prevState.concat([res.data])))
           .catch((err) => console.log(err))
       )
     }
@@ -31,11 +26,9 @@ export default function PokeList() {
     }
 
     fetchPokemon()
-    setShouldUpdate(false)
-    // }
   }, [])
 
-  //TODO: push id to router
+  //Take to the Pokemon route
   const handleClick = (id) => history.push(`/${id}`)
 
   // If more them one type add comma between
@@ -49,7 +42,7 @@ export default function PokeList() {
       pokemons.map((poke) => {
         const { id, name, height, weight, types } = poke
         return (
-          <tr onClick={() => handleClick(id)} key={id}>
+          <tr style={{ cursor: 'pointer' }} onClick={() => handleClick(id)} key={id}>
             <td>{id}</td>
             <td>{name}</td>
             <td>{height}</td>
