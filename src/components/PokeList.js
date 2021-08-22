@@ -1,76 +1,57 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import Table from 'react-bootstrap/Table'
+import { useHistory } from 'react-router-dom'
 
 export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
+  const history = useHistory()
 
   useEffect(() => {
-    if (!pokemons.length) {
-      const fetchPokeDetails = (data) => {
-        const list = []
-
-        data.forEach((poke) =>
-          axios
-            .get(`https://pokeapi.co/api/v2/pokemon/${poke.name}`)
-            .then((res) => {
-              const { id, name, height, weight, types } = res.data
-
-              return {
-                id,
-                name,
-                height,
-                weight,
-                types,
-              }
-            })
-            .then((poke) => {
-              list.push(poke)
-              setPokemons(list)
-            })
-            .catch((err) => console.log(err))
-        )
-      }
-
-      const fetchPokemon = async () => {
-        try {
-          const response = await axios.get('https://pokeapi.co/api/v2/pokemon')
-          const data = await response.data.results
-          fetchPokeDetails(data)
-        } catch (err) {
-          console.log(err)
-        }
-      }
-
-      fetchPokemon()
+    const fetchPokeDetails = (data) => {
+      const list = []
+      data.forEach((poke) =>
+        axios
+          .get(poke.url)
+          .then((res) => setPokemons((list) => list.concat([res.data])))
+          .catch((err) => console.log(err))
+      )
+      setPokemons(list)
     }
-  }, [pokemons])
 
-  // If more them one type add comma in between
+    const fetchPokemon = () => {
+      axios
+        .get('https://pokeapi.co/api/v2/pokemon')
+        .then((res) => res.data.results)
+        .then((data) => fetchPokeDetails(data))
+        .catch((err) => console.log(err))
+    }
+    fetchPokemon()
+  }, [])
+
+  //Take to the Pokemon route
+  const handleClick = (id) => history.push(`/${id}`)
+
+  // If more them one type add comma between
   const formatTypes = (types) => {
     return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
   }
 
   const displayPokemons = () => {
-    return (
-      pokemons &&
-      pokemons
-        .sort(function (a, b) {
-          return a.id - b.id
-        })
-        .map((poke) => {
-          const { id, name, height, weight, types } = poke
-          return (
-            <tr key={id}>
-              <td>{id}</td>
-              <td>{name}</td>
-              <td>{height}</td>
-              <td>{weight}</td>
-              <td>{formatTypes(types)}</td>
-            </tr>
-          )
-        })
-    )
+    return pokemons
+      .sort((a, b) => a.id - b.id)
+      .map((poke) => {
+        const { id, name, height, weight, types } = poke
+        return (
+          <tr style={{ cursor: 'pointer' }} onClick={() => handleClick(id)} key={id}>
+            <td>{id}</td>
+            <td>{name}</td>
+            <td>{height}</td>
+            <td>{weight}</td>
+            <td>{formatTypes(types)}</td>
+          </tr>
+        )
+      })
   }
 
   return (
