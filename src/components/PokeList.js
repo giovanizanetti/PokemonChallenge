@@ -9,7 +9,8 @@ export default function PokeList() {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [active, setActive] = useState(1)
   const [paginationItems, setPaginationItems] = useState([])
-  const [currentPageUrl, setCurrentPageUrl] = useState(`https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}`)
+  const [baseUrl, setBaseUrl] = useState(`https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}`)
+  const [currentPageUrl, setCurrentPageUrl] = useState(baseUrl)
   const [nextPageUrl, setNextPageUrl] = useState()
   const [previousPageUrl, setPreviousPageUrl] = useState()
 
@@ -30,7 +31,6 @@ export default function PokeList() {
       axios
         .get(currentPageUrl)
         .then((res) => {
-          console.log(res.data)
           setNextPageUrl(res.data.next)
           setPreviousPageUrl(res.data.previous)
           return res.data.results
@@ -51,7 +51,7 @@ export default function PokeList() {
 
   //Handle pagination
   useEffect(() => {
-    const goToNextPage = (url) => setCurrentPageUrl(nextPageUrl)
+    const goToSelectedPage = (pageNumber) => setCurrentPageUrl(`${baseUrl}&offset=${pageNumber}0`)
 
     const displayPageButtons = () => {
       let items = []
@@ -61,7 +61,7 @@ export default function PokeList() {
             key={number}
             onClick={(e) => {
               setActive(e.target.innerText)
-              goToNextPage(nextPageUrl)
+              goToSelectedPage(e.target.innerText)
             }}
             active={number == active}
           >
@@ -118,7 +118,7 @@ export default function PokeList() {
         {paginationItems}
         <Pagination.Next
           disabled={active >= paginationItems.length}
-          onClick={() => {
+          onClick={(e) => {
             setCurrentPageUrl(nextPageUrl)
             setActive((prevState) => Number(prevState) + 1)
           }}
