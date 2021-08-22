@@ -9,7 +9,7 @@ export default function PokeList() {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [active, setActive] = useState(1)
   const [paginationItems, setPaginationItems] = useState([])
-  const [baseUrl, setBaseUrl] = useState(`https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}`)
+  const baseUrl = `https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}`
   const [currentPageUrl, setCurrentPageUrl] = useState(baseUrl)
   const [nextPageUrl, setNextPageUrl] = useState()
   const [previousPageUrl, setPreviousPageUrl] = useState()
@@ -107,7 +107,7 @@ export default function PokeList() {
         </thead>
         <tbody>{displayPokemons()}</tbody>
       </Table>
-      <Pagination size='lg'>
+      <Pagination size='md'>
         <Pagination.Prev
           disabled={active <= 1 && true}
           onClick={() => {
