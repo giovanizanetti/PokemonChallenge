@@ -9,8 +9,8 @@ export default function PokeList() {
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [active, setActive] = useState(1)
   const [paginationItems, setPaginationItems] = useState([])
-  const BASE_URL = `https://pokeapi.co/api/v2/pokemon/?limit=${itemsPerPage}`
-  const [currentPageUrl, setCurrentPageUrl] = useState(BASE_URL)
+  const [baseUrl, setBaseUrl] = useState(`https://pokeapi.co/api/v2/pokemon/?limit=10`)
+  const [currentPageUrl, setCurrentPageUrl] = useState(`https://pokeapi.co/api/v2/pokemon/?limit=10`)
   const [nextPageUrl, setNextPageUrl] = useState()
   const [previousPageUrl, setPreviousPageUrl] = useState()
 
@@ -48,18 +48,9 @@ export default function PokeList() {
 
   //Handle pagination
   useEffect(() => {
-    // const goToSelectedPage = (pageNumber) => {
-    //   if (pageNumber == 1) {
-    //     return setCurrentPageUrl(BASE_URL)
-    //   }
-    //   setCurrentPageUrl(`${BASE_URL}&offset=${pageNumber}0`)
-    // }
-
     const goToSelectedPage = (pageNumber) => {
       const startIndex = pageNumber * itemsPerPage - itemsPerPage
-      const endIndex = startIndex + itemsPerPage
-      setCurrentPageUrl(`${BASE_URL}&offset=${startIndex}`)
-      // return pokemons.slice(startIndex, endIndex)
+      setCurrentPageUrl(`${baseUrl}&offset=${startIndex}`)
     }
 
     const displayPageButtons = () => {
@@ -84,7 +75,7 @@ export default function PokeList() {
     }
 
     displayPageButtons()
-  }, [active, itemsPerPage, nextPageUrl, BASE_URL])
+  }, [active, itemsPerPage, nextPageUrl, baseUrl])
 
   const displayPokemons = () => {
     return pokemons
@@ -106,6 +97,8 @@ export default function PokeList() {
   const handleItemsPerPage = (e) => {
     e.target.blur()
     setItemsPerPage(e.target.text)
+    setCurrentPageUrl(`https://pokeapi.co/api/v2/pokemon/?limit=${e.target.text}`)
+    setBaseUrl(`https://pokeapi.co/api/v2/pokemon/?limit=${e.target.text}`)
     console.log(e.target.text)
   }
 
