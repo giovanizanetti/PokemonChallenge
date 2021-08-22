@@ -64,7 +64,7 @@ export default function PokeList() {
     setActive(page)
   }
 
-  const displayPaginationOptions = () => {
+  const displayPageButtons = () => {
     let items = []
     for (let number = 1; number <= itemsPerPage; number++) {
       items.push(
@@ -92,7 +92,7 @@ export default function PokeList() {
       </Table>
       <Pagination size='lg'>
         <Pagination.Prev />
-        {displayPaginationOptions()}
+        {displayPageButtons()}
         <Pagination.Next />
       </Pagination>
     </>
