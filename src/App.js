@@ -1,12 +1,26 @@
 import './App.css'
-import Router from './router'
+import Route from './router'
+import Nav from 'react-bootstrap/Nav'
+import { BrowserRouter as Router, NavLink } from 'react-router-dom'
 
 function App() {
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <Router />
-      </header>
+    <div>
+      <Router>
+        <Nav
+          className='bg-warning w-100 d-flex justify-content-end p-4 align-items-center h-30'
+          activeKey='/home'
+          onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
+        >
+          <NavLink to='/'>
+            <span className='m-5'>Home</span>
+          </NavLink>
+        </Nav>
+
+        <div className='App-body'>
+          <Route />
+        </div>
+      </Router>
     </div>
   )
 }

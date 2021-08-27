@@ -26,37 +26,57 @@ export default function PokeList() {
   const displayTypes = (types) => {
     return (
       <ListGroupItem>
-        <div>{`${types.length > 1 ? 'Types are: ' : ' Type is '}`}</div>
-        <strong className='text-capitalize'>{formatTypes(types)}</strong>
+        <span className='text-nowrap'>{`${types.length > 1 ? 'Types: ' : 'Type: '}`}</span>
+        <strong style={{ float: 'right' }} className='text-capitalize'>
+          {formatTypes(types)}
+        </strong>
       </ListGroupItem>
     )
   }
 
   return (
-    <Card style={{ width: '18rem' }}>
+    // <Card style={{ width: '18rem' }}>
+    <>
       {
         // const { name, height, weight, types } = pokemon && pokemon
         pokemon && (
-          <ListGroup variant='flush'>
-            <ListGroupItem className='text-uppercase'>
-              <strong>{pokemon.name}</strong>
-            </ListGroupItem>
-            <ListGroupItem>
-              ID is <strong className='text-capitalize '>{id}</strong>
-            </ListGroupItem>
-            <ListGroupItem>
-              Heigth is <strong className='text-capitalize'>{pokemon.height}</strong>
-            </ListGroupItem>
-            <ListGroupItem>
-              Weight is <strong className='text-capitalize'>{pokemon.weight}</strong>
-            </ListGroupItem>
-            <ListGroupItem>
-              Weight is <strong className='text-capitalize'>{pokemon.weight}</strong>
-            </ListGroupItem>
-            {displayTypes(pokemon.types)}
-          </ListGroup>
+          <Card>
+            <ListGroup variant='flush'>
+              <ListGroupItem className='text-uppercase'>
+                <span style={{ marginLeft: '2rem' }} className='d-flex align-items-center justify-content-around'>
+                  <strong>{pokemon.name}</strong>
+                  <img className='h-2' src={`${pokemon.sprites.front_shiny}`} />
+                </span>
+              </ListGroupItem>
+              <ListGroupItem>
+                ID
+                <strong style={{ float: 'right' }} className='text-capitalize '>
+                  {id}
+                </strong>
+              </ListGroupItem>
+              <ListGroupItem>
+                Heigth
+                <strong style={{ float: 'right' }} className='text-capitalize'>
+                  {pokemon.height}
+                </strong>
+              </ListGroupItem>
+              <ListGroupItem>
+                Weight
+                <strong style={{ float: 'right' }} className='text-capitalize'>
+                  {pokemon.weight}
+                </strong>
+              </ListGroupItem>
+              <ListGroupItem>
+                Weight
+                <strong style={{ float: 'right' }} className='text-capitalize'>
+                  {pokemon.weight}
+                </strong>
+              </ListGroupItem>
+              {displayTypes(pokemon.types)}
+            </ListGroup>
+          </Card>
         )
       }
-    </Card>
+    </>
   )
 }
