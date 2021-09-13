@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+
 import { Table, Pagination, Dropdown, DropdownButton } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
+import { useFetchPokemons } from '../hooks/useFetchPokemons'
+import { BASE_URL } from '../config/constants'
 
 export default function PokeList() {
   const [pokemons, setPokemons] = useState([])
@@ -14,32 +16,13 @@ export default function PokeList() {
   const [nextPageUrl, setNextPageUrl] = useState()
   const [previousPageUrl, setPreviousPageUrl] = useState()
 
-  //Handle API request
-  useEffect(() => {
-    const fetchPokeDetails = (data) => {
-      const list = []
-      data.forEach((poke) =>
-        axios
-          .get(poke.url)
-          .then((res) => setPokemons((list) => list.concat([res.data])))
-          .catch((err) => console.log(err))
-      )
-      setPokemons(list)
-    }
+  const [data, loading, error] = useFetchPokemons(BASE_URL)
 
-    const fetchPokemon = () => {
-      axios
-        .get(currentPageUrl)
-        .then((res) => {
-          setNextPageUrl(res.data.next)
-          setPreviousPageUrl(res.data.previous)
-          return res.data.results
-        })
-        .then((data) => fetchPokeDetails(data))
-        .catch((err) => console.log(err))
-    }
-    fetchPokemon()
-  }, [itemsPerPage, currentPageUrl])
+  //Handle API request
+
+  useEffect(() => {
+    console.log(data)
+  }, [data])
 
   // If more them one type add comma between
   const formatTypes = (types) => {
@@ -86,7 +69,7 @@ export default function PokeList() {
     displayPageButtons()
   }, [active, itemsPerPage, nextPageUrl, baseUrl])
 
-  const displayPokemons = () => {
+  const displayPokemons = (pokemons) => {
     return pokemons
       .sort((a, b) => a.id - b.id)
       .map((poke) => {
@@ -110,51 +93,53 @@ export default function PokeList() {
   }
 
   return (
-    <>
-      <Table striped bordered hover variant='dark'>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Height</th>
-            <th>Weight</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>{displayPokemons()}</tbody>
-      </Table>
+    <div>banana</div>
+    // <>
+    //   <Table striped bordered hover variant='dark'>
+    //     <thead>
+    //       <tr>
+    //         <th>ID</th>
+    //         <th>Name</th>
+    //         <th>Height</th>
+    //         <th>Weight</th>
+    //         <th>Type</th>
+    //       </tr>
+    //     </thead>
+    //     <tbody>{displayPokemons(pokemons)}</tbody>
+    //   </Table>
 
-      <div className='d-flex justify-content-around w-100'>
-        <DropdownButton onClick={(e) => e.target.blur()} id={`dropdown-variants-warning`} title='item per page'>
-          <Dropdown.Item onClick={handleItemsPerPage} eventKey='1' active={itemsPerPage == 5}>
-            5
-          </Dropdown.Item>
-          <Dropdown.Item onClick={handleItemsPerPage} eventKey='2' active={itemsPerPage == 10}>
-            10
-          </Dropdown.Item>
-          <Dropdown.Item onClick={handleItemsPerPage} eventKey='3' active={itemsPerPage == 50}>
-            50
-          </Dropdown.Item>
-        </DropdownButton>
+    //   <div className='d-flex justify-content-around w-100'>
+    //     {/* loop through */}
+    //     <DropdownButton onClick={(e) => e.target.blur()} id={`dropdown-variants-warning`} title='item per page'>
+    //       <Dropdown.Item onClick={handleItemsPerPage} eventKey='1' active={itemsPerPage == 5}>
+    //         5
+    //       </Dropdown.Item>
+    //       <Dropdown.Item onClick={handleItemsPerPage} eventKey='2' active={itemsPerPage == 10}>
+    //         10
+    //       </Dropdown.Item>
+    //       <Dropdown.Item onClick={handleItemsPerPage} eventKey='3' active={itemsPerPage == 50}>
+    //         50
+    //       </Dropdown.Item>
+    //     </DropdownButton>
 
-        <Pagination size='md'>
-          <Pagination.Prev
-            disabled={active <= 1 && true}
-            onClick={() => {
-              setCurrentPageUrl(previousPageUrl)
-              setActive((prevState) => Number(prevState) - 1)
-            }}
-          />
-          {paginationItems}
-          <Pagination.Next
-            disabled={active >= paginationItems.length}
-            onClick={(e) => {
-              setCurrentPageUrl(nextPageUrl)
-              setActive((prevState) => Number(prevState) + 1)
-            }}
-          />
-        </Pagination>
-      </div>
-    </>
+    //     <Pagination size='md'>
+    //       <Pagination.Prev
+    //         disabled={active <= 1 && true}
+    //         onClick={() => {
+    //           setCurrentPageUrl(previousPageUrl)
+    //           setActive((prevState) => Number(prevState) - 1)
+    //         }}
+    //       />
+    //       {paginationItems}
+    //       <Pagination.Next
+    //         disabled={active >= paginationItems.length}
+    //         onClick={(e) => {
+    //           setCurrentPageUrl(nextPageUrl)
+    //           setActive((prevState) => Number(prevState) + 1)
+    //         }}
+    //       />
+    //     </Pagination>
+    //   </div>
+    // </>
   )
 }
