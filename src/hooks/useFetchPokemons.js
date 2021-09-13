@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-// import { useHistory } from 'react-router-dom'
+import { BASE_URL } from '../config/constants'
 
-export const useFetchPokemons = (url) => {
+export const useFetchPokemons = (itemsPerPage, offset) => {
+  const url = `${BASE_URL}?limit=${itemsPerPage}&offset=${offset}`
+
   const [data, setData] = useState([])
+  const [dataCount, setDataCount] = useState(0)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
@@ -11,18 +14,23 @@ export const useFetchPokemons = (url) => {
     setLoading(true)
 
     const fetchPokeDetails = (data) => {
+      let pageData = []
       data.forEach((item) =>
         axios
           .get(item.url)
-          .then((res) => setData((list) => list.concat([res.data])))
-          .catch((err) => console.log(err))
+          .then((res) => {
+            pageData = pageData.concat([res.data])
+            setData(pageData)
+          })
+          .catch((err) => console.error(err))
       )
     }
 
     axios
       .get(url)
       .then((response) => {
-        const results = response.data.results
+        const { count, results } = response.data
+        setDataCount(count)
         fetchPokeDetails(results)
       })
       .catch((err) => {
@@ -31,5 +39,5 @@ export const useFetchPokemons = (url) => {
       .finally(() => setLoading(false))
   }, [url])
 
-  return [data, loading, error]
+  return [data, loading, error, dataCount]
 }
