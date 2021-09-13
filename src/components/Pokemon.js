@@ -1,23 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useEffect } from 'react'
+import { BASE_URL } from '../config/constants'
 import { Card, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
+import { useFetch } from '../hooks/useFetch'
 
 export default function PokeList() {
   const { id } = useParams()
-  const [pokemon, setPokemon] = useState()
-  useEffect(() => {
-    const fetchPokemon = async () => {
-      try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`)
-        const data = await response.data
-        setPokemon(data)
-      } catch (err) {
-        console.log(err)
-      }
-    }
-    fetchPokemon()
-  }, [id])
+  const [data, loading, error] = useFetch(BASE_URL + id)
 
   const formatTypes = (types) => {
     return types.map((type, i) => (i !== types.length - 1 ? type.type.name + ', ' : type.type.name))
@@ -34,49 +23,49 @@ export default function PokeList() {
     )
   }
 
+  const { name, height, weight, types, sprites } = data !== undefined && data
+
   return (
-    // <Card style={{ width: '18rem' }}>
     <>
-      {
-        // const { name, height, weight, types } = pokemon && pokemon
-        pokemon && (
-          <Card>
-            <ListGroup variant='flush'>
-              <ListGroupItem className='text-uppercase'>
-                <span style={{ marginLeft: '2rem' }} className='d-flex align-items-center justify-content-around'>
-                  <strong>{pokemon.name}</strong>
-                  <img className='h-2' src={`${pokemon.sprites.front_shiny}`} />
-                </span>
-              </ListGroupItem>
-              <ListGroupItem>
-                ID
-                <strong style={{ float: 'right' }} className='text-capitalize '>
-                  {id}
-                </strong>
-              </ListGroupItem>
-              <ListGroupItem>
-                Heigth
-                <strong style={{ float: 'right' }} className='text-capitalize'>
-                  {pokemon.height}
-                </strong>
-              </ListGroupItem>
-              <ListGroupItem>
-                Weight
-                <strong style={{ float: 'right' }} className='text-capitalize'>
-                  {pokemon.weight}
-                </strong>
-              </ListGroupItem>
-              <ListGroupItem>
-                Weight
-                <strong style={{ float: 'right' }} className='text-capitalize'>
-                  {pokemon.weight}
-                </strong>
-              </ListGroupItem>
-              {displayTypes(pokemon.types)}
-            </ListGroup>
-          </Card>
-        )
-      }
+      {error && 'an error occurred'}
+      {loading && 'loading'}
+      {data && (
+        <Card>
+          <ListGroup variant='flush'>
+            <ListGroupItem className='text-uppercase'>
+              <span style={{ marginLeft: '2rem' }} className='d-flex align-items-center justify-content-around'>
+                <strong>{name}</strong>
+                <img className='h-2' src={`${sprites.front_shiny}`} />
+              </span>
+            </ListGroupItem>
+            <ListGroupItem>
+              ID
+              <strong style={{ float: 'right' }} className='text-capitalize '>
+                {id}
+              </strong>
+            </ListGroupItem>
+            <ListGroupItem>
+              Heigth
+              <strong style={{ float: 'right' }} className='text-capitalize'>
+                {height}
+              </strong>
+            </ListGroupItem>
+            <ListGroupItem>
+              Weight
+              <strong style={{ float: 'right' }} className='text-capitalize'>
+                {weight}
+              </strong>
+            </ListGroupItem>
+            <ListGroupItem>
+              Weight
+              <strong style={{ float: 'right' }} className='text-capitalize'>
+                {weight}
+              </strong>
+            </ListGroupItem>
+            {displayTypes(types)}
+          </ListGroup>
+        </Card>
+      )}
     </>
   )
 }
