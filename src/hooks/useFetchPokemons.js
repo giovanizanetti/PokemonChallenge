@@ -34,6 +34,7 @@ export const useFetchPokemons = (itemsPerPage, offset) => {
         fetchPokeDetails(results)
       })
       .catch((err) => {
+        console.error(err)
         setError(err)
       })
       .finally(() => setLoading(false))
