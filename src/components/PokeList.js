@@ -76,7 +76,6 @@ export default function PokeList() {
           containerClassName='pagination'
         />
       </div>
-      <strong>{error && error}</strong>
     </>
   )
 }
