@@ -11,7 +11,7 @@ export default function PokeList() {
   const itemClass = 'text-nowrap text-capitalize float-end'
 
   if (loading) {
-    return <div className='text-ligth'>'Loading...'</div>
+    return <div className='text-ligth'>Loading...</div>
   }
   if (error) {
     return <div className='text-ligth'>An error occurred!</div>

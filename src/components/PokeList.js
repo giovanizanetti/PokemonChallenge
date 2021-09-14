@@ -31,7 +31,7 @@ export default function PokeList() {
   const dropDownItemsLabel = ['5', '10', '50']
 
   if (loading) {
-    return <div className='text-ligth'>'Loading...'</div>
+    return <div className='text-ligth'>Loading...</div>
   }
   if (error) {
     return <div className='text-ligth'>An error occurred!</div>
