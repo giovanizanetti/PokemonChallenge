@@ -30,9 +30,15 @@ export default function PokeList() {
   const tableColums = ['ID', 'Name', 'Height', 'Weight', 'Type']
   const dropDownItemsLabel = ['5', '10', '50']
 
+  if (loading) {
+    return <div className='text-ligth'>'Loading...'</div>
+  }
+  if (error) {
+    return <div className='text-ligth'>An error occurred!</div>
+  }
+
   return (
     <>
-      <div>{loading && 'Loading ...'}</div>
       <Table striped bordered hover variant='dark'>
         <thead>
           <tr>{tableColums && tableColums.map((colName) => <th key={colName}>{colName}</th>)}</tr>
@@ -45,7 +51,12 @@ export default function PokeList() {
       <div className='d-flex justify-content-around w-100'>
         <DropdownButton onClick={(e) => e.target.blur()} id={`dropdown-variants-warning`} title='item per page'>
           {dropDownItemsLabel.map((label, index) => (
-            <Dropdown.Item key={label} onClick={handleItemsPerPage} eventKey={index + 1} active={itemsPerPage == label}>
+            <Dropdown.Item
+              key={label}
+              onClick={handleItemsPerPage}
+              eventKey={index + 1}
+              active={itemsPerPage === label}
+            >
               {label}
             </Dropdown.Item>
           ))}
