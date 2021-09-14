@@ -55,7 +55,8 @@ export default function PokeList() {
               key={label}
               onClick={handleItemsPerPage}
               eventKey={index + 1}
-              active={itemsPerPage === label}
+              // eslint-disable-next-line eqeqeq
+              active={itemsPerPage == label}
             >
               {label}
             </Dropdown.Item>
