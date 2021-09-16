@@ -1,0 +1,28 @@
+{
+  "nav_links": {
+    "home": "Home"
+  },
+  "pokemon_table_headings": {
+    "id": "ID",
+    "name": "Name",
+    "height": "Height",
+    "weight": "Weight",
+    "type": "Type"
+  },
+  "perpage_dropdown_labels": {
+    "five": "5",
+    "ten": "10",
+    "fifty": "50"
+  },
+  "loading": "Loading...",
+  "generic_error": "An error has occurred!",
+  "pokemon_card_items": {
+    "id": "ID",
+    "height": "Height",
+    "weight": "Weight",
+    "type": {
+      "singular": "Type",
+      "plural": "Types"
+    }
+  }
+}
