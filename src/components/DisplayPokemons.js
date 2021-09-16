@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 const DisplayPokemons = ({ pokemons }) => {
   const history = useHistory()
   return pokemons
-    .sort((a, b) => a.id - b.id)
+    .sort((pokemonA, pokemonB) => pokemonA.id - pokemonB.id)
     .map((poke) => {
       const { id, name, height, weight, types } = poke
       return (
