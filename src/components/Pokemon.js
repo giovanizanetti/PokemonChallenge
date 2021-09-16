@@ -36,7 +36,7 @@ export default function PokeList() {
               <strong className={itemClass}>{id}</strong>
             </ListGroupItem>
             <ListGroupItem>
-              Heigth
+              Height
               <strong className={itemClass}>{height}</strong>
             </ListGroupItem>
             <ListGroupItem>
