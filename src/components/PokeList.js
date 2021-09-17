@@ -30,18 +30,14 @@ export default function PokeList() {
   }
 
   const tableColums = [
-    t('pokemon_table_headings.id'),
+    'ID',
     t('pokemon_table_headings.name'),
     t('pokemon_table_headings.height'),
     t('pokemon_table_headings.weight'),
     t('pokemon_table_headings.type'),
   ]
 
-  const dropDownItemsLabel = [
-    t('perpage_dropdown_labels.five'),
-    t('perpage_dropdown_labels.ten'),
-    t('perpage_dropdown_labels.fifty'),
-  ]
+  const dropDownItemsLabel = [5, 10, 50]
 
   if (loading) {
     return <div className='text-ligth'>{t('loading')}</div>

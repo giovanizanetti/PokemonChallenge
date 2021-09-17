@@ -34,7 +34,7 @@ export default function PokeList() {
               </span>
             </ListGroupItem>
             <ListGroupItem>
-              {t('pokemon_card_items.id')}
+              ID
               <strong className={itemClass}>{id}</strong>
             </ListGroupItem>
             <ListGroupItem>
