@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import './App.css'
 import Route from './router'
 import Nav from 'react-bootstrap/Nav'

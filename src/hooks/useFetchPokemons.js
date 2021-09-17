@@ -29,7 +29,6 @@ export const useFetchPokemons = (itemsPerPage, offset) => {
     axios
       .get(url)
       .then((response) => {
-        console.log(response)
         const { count, results } = response.data
         setDataCount(count)
         fetchPokeDetails(results)
