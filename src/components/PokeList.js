@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Table, Dropdown, DropdownButton } from 'react-bootstrap'
 import { useFetchPokemons } from '../hooks/useFetchPokemons'
+import { useTranslation } from 'react-i18next'
 
 import ReactPaginate from 'react-paginate'
 import DisplayPokemons from './DisplayPokemons'
@@ -10,6 +11,7 @@ export default function PokeList() {
   const [offset, setOffset] = useState(0)
   const [currentPage, setCurrentPage] = useState(0)
   const [data, loading, error, dataCount] = useFetchPokemons(itemsPerPage, offset)
+  const { t } = useTranslation()
 
   const pages = Math.floor(dataCount / itemsPerPage)
 
@@ -27,14 +29,25 @@ export default function PokeList() {
     setOffset(offset)
   }
 
-  const tableColums = ['ID', 'Name', 'Height', 'Weight', 'Type']
-  const dropDownItemsLabel = ['5', '10', '50']
+  const tableColums = [
+    t('pokemon_table_headings.id'),
+    t('pokemon_table_headings.name'),
+    t('pokemon_table_headings.height'),
+    t('pokemon_table_headings.weight'),
+    t('pokemon_table_headings.type'),
+  ]
+
+  const dropDownItemsLabel = [
+    t('perpage_dropdown_labels.five'),
+    t('perpage_dropdown_labels.ten'),
+    t('perpage_dropdown_labels.fifty'),
+  ]
 
   if (loading) {
-    return <div className='text-ligth'>Loading...</div>
+    return <div className='text-ligth'>{t('loading')}</div>
   }
   if (error) {
-    return <div className='text-ligth'>An error occurred!</div>
+    return <div className='text-ligth'>{t('generic_error')}</div>
   }
 
   return (
@@ -55,8 +68,7 @@ export default function PokeList() {
               key={label}
               onClick={handleItemsPerPage}
               eventKey={index + 1}
-              // eslint-disable-next-line eqeqeq
-              active={itemsPerPage == label}
+              active={itemsPerPage === Number(label)}
             >
               {label}
             </Dropdown.Item>

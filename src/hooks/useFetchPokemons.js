@@ -3,15 +3,13 @@ import axios from 'axios'
 import { BASE_URL } from '../config/constants'
 
 export const useFetchPokemons = (itemsPerPage, offset) => {
-  const url = `${BASE_URL}?limit=${itemsPerPage}&offset=${offset}`
-
   const [data, setData] = useState([])
   const [dataCount, setDataCount] = useState(0)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    setLoading(true)
+    const url = `${BASE_URL}?limit=${itemsPerPage}&offset=${offset}`
 
     const fetchPokeDetails = (data) => {
       let pageData = []
@@ -26,6 +24,8 @@ export const useFetchPokemons = (itemsPerPage, offset) => {
       )
     }
 
+    setLoading(true)
+
     axios
       .get(url)
       .then((response) => {
@@ -38,7 +38,7 @@ export const useFetchPokemons = (itemsPerPage, offset) => {
         setError(err)
       })
       .finally(() => setLoading(false))
-  }, [url])
+  }, [offset, itemsPerPage])
 
   return [data, loading, error, dataCount]
 }
